@@ -1,0 +1,262 @@
+sebatapiaoviedo=# CREATE DATABASE posts;
+CREATE DATABASE
+sebatapiaoviedo=# CREATE TABLE post(
+sebatapiaoviedo(# id SERIAL,
+sebatapiaoviedo(# nombre_de_usuario VARCHAR(20),
+sebatapiaoviedo(# fecha_de_creación DATE,
+sebatapiaoviedo(# contenido VARCHAR,
+sebatapiaoviedo(# descripción VARCHAR,
+sebatapiaoviedo(# PRIMARY KEY (id)
+sebatapiaoviedo(# );
+CREATE TABLE
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción)
+sebatapiaoviedo-# VALUES ('Pamela', '01-02-2020', 'Prueba Pamela 1', 'Prueba tabla 1');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción)
+sebatapiaoviedo-# VALUES ('Pamela', '02-02-2020', 'Prueba Pamela 2', 'Prueba tabla 2');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción)
+sebatapiaoviedo-# VALUES ('Carlos', '03-02-2020', 'Prueba Carlos 3', 'Prueba tabla 3');
+INSERT 0 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   
+----+-------------------+-------------------+-----------------+----------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2
+  3 | Carlos            | 2020-02-03        | Prueba Carlos 3 | Prueba tabla 3
+(3 rows)
+
+sebatapiaoviedo=# alter table post ADD título VARCHAR;
+ALTER TABLE
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   | título 
+----+-------------------+-------------------+-----------------+----------------+--------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | 
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | 
+  3 | Carlos            | 2020-02-03        | Prueba Carlos 3 | Prueba tabla 3 | 
+(3 rows)
+
+sebatapiaoviedo=# UPDATE post
+sebatapiaoviedo-# SET tìtulo = 'primer update'
+sebatapiaoviedo-# WHERE id = 1;
+ERROR:  column "tìtulo" of relation "post" does not exist
+LINE 2: SET tìtulo = 'primer update'
+            ^
+sebatapiaoviedo=# UPDATE post
+sebatapiaoviedo-# SET título = 'primer update'
+sebatapiaoviedo-# WHERE id = 1;
+UPDATE 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |    título     
+----+-------------------+-------------------+-----------------+----------------+---------------
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | 
+  3 | Carlos            | 2020-02-03        | Prueba Carlos 3 | Prueba tabla 3 | 
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+(3 rows)
+
+sebatapiaoviedo=# UPDATE post
+sebatapiaoviedo-# SET título = 'segundo update'
+sebatapiaoviedo-# WHERE id = 2;
+UPDATE 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |     título     
+----+-------------------+-------------------+-----------------+----------------+----------------
+  3 | Carlos            | 2020-02-03        | Prueba Carlos 3 | Prueba tabla 3 | 
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+(3 rows)
+
+sebatapiaoviedo=# UPDATE post
+sebatapiaoviedo-# SET título = 'tercer update'
+sebatapiaoviedo-# WHERE id = 3;
+UPDATE 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |     título     
+----+-------------------+-------------------+-----------------+----------------+----------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  3 | Carlos            | 2020-02-03        | Prueba Carlos 3 | Prueba tabla 3 | tercer update
+(3 rows)
+
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción)
+sebatapiaoviedo-# 123
+sebatapiaoviedo-# ^C
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción, título)
+sebatapiaoviedo-# VALUES ('Pedro', '04-02-2020', 'Prueba Pedro 1', 'Prueba tabla 4', 'cuarto para Pedro'); 
+INSERT 0 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |      título       
+----+-------------------+-------------------+-----------------+----------------+-------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  3 | Carlos            | 2020-02-03        | Prueba Carlos 3 | Prueba tabla 3 | tercer update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+(4 rows)
+
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción, título)
+sebatapiaoviedo-# VALUES ('Pedro', '05-02-2020', 'Prueba Pedro 2', 'Prueba tabla 5', 'quinto para Pedro');
+INSERT 0 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |      título       
+----+-------------------+-------------------+-----------------+----------------+-------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  3 | Carlos            | 2020-02-03        | Prueba Carlos 3 | Prueba tabla 3 | tercer update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2  | Prueba tabla 5 | quinto para Pedro
+(5 rows)
+
+sebatapiaoviedo=# DELETE FROM post WHERE id = 3;
+DELETE 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |      título       
+----+-------------------+-------------------+-----------------+----------------+-------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2  | Prueba tabla 5 | quinto para Pedro
+(4 rows)
+
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción, título)
+sebatapiaoviedo-# VALUES ('Carlos', '06-02-2020', 'Prueba Carlos 4', 'Prueba tabla 6', 'volviendo con Carlos');
+INSERT 0 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |        título        
+----+-------------------+-------------------+-----------------+----------------+----------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2  | Prueba tabla 5 | quinto para Pedro
+  6 | Carlos            | 2020-02-06        | Prueba Carlos 4 | Prueba tabla 6 | volviendo con Carlos
+(5 rows)
+
+sebatapiaoviedo=# CREATE TABLE comentarios(
+sebatapiaoviedo(# id SERIAL,
+sebatapiaoviedo(# fechayhora_decreación DATE,
+sebatapiaoviedo(# contenido VARCHAR,
+sebatapiaoviedo(# PRIMARY KEY (id)
+sebatapiaoviedo(# );
+CREATE TABLE
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# DELETE FROM comentarios;
+DELETE 0
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# DELETE FROM TABLE comenatrios;
+ERROR:  syntax error at or near "TABLE"
+LINE 1: DELETE FROM TABLE comenatrios;
+                    ^
+sebatapiaoviedo=# DELETE FROM comentarios:
+sebatapiaoviedo-# DELETE FROM comentarios;
+ERROR:  syntax error at or near ":"
+LINE 1: DELETE FROM comentarios:
+                               ^
+sebatapiaoviedo=# DELETE FROM comentarios;
+DELETE 0
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |        título        
+----+-------------------+-------------------+-----------------+----------------+----------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2  | Prueba tabla 5 | quinto para Pedro
+  6 | Carlos            | 2020-02-06        | Prueba Carlos 4 | Prueba tabla 6 | volviendo con Carlos
+(5 rows)
+
+sebatapiaoviedo=# slect * from comentarios;
+ERROR:  syntax error at or near "slect"
+LINE 1: slect * from comentarios;
+        ^
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# ALTER TABLE post
+sebatapiaoviedo-# ADD FOREIGN KEY (id) REFERENCES comentarios(id);
+ERROR:  insert or update on table "post" violates foreign key constraint "post_id_fkey"
+DETAIL:  Key (id)=(1) is not present in table "comentarios".
+sebatapiaoviedo=# ADD FOREIGN KEY (id) REFERENCES post(id);
+ERROR:  syntax error at or near "ADD"
+LINE 1: ADD FOREIGN KEY (id) REFERENCES post(id);
+        ^
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# INSERT INTO comentarios (id, fechayhora_decreación, contenido)
+sebatapiaoviedo-# VALUES (1, '05-03-2020', 'primera prueba comentario');
+INSERT 0 1
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación |         contenido         
+----+-----------------------+---------------------------
+  1 | 2020-03-05            | primera prueba comentario
+(1 row)
+
+sebatapiaoviedo=# ALTER TABLE post
+sebatapiaoviedo-# ADD FOREIGN KEY (id) REFERENCES comentarios(id);
+ERROR:  insert or update on table "post" violates foreign key constraint "post_id_fkey"
+DETAIL:  Key (id)=(2) is not present in table "comentarios".
+sebatapiaoviedo=# ALTER TABLE post
+sebatapiaoviedo-# ADD FOREIGN KEY (id) REFERENCES comentarios(id = 1);
+ERROR:  syntax error at or near "="
+LINE 2: ADD FOREIGN KEY (id) REFERENCES comentarios(id = 1);
+                                                       ^
+sebatapiaoviedo=# ALTER TABLE post
+sebatapiaoviedo-# ADD FOREIGN KEY (id) REFERENCES id(id);
+ERROR:  relation "id" does not exist
+sebatapiaoviedo=# DELETE FROM comentarios WHERE id = 1;
+DELETE 1
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# ALTER TABLE comentarios
+sebatapiaoviedo-# ADD FOREIGN KEY (id) REFERENCES post(id);
+ALTER TABLE
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |        título        
+----+-------------------+-------------------+-----------------+----------------+----------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2  | Prueba tabla 5 | quinto para Pedro
+  6 | Carlos            | 2020-02-06        | Prueba Carlos 4 | Prueba tabla 6 | volviendo con Carlos
+(5 rows)
+
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora_decreación | contenido 
+----+-----------------------+-----------
+(0 rows)
+
+sebatapiaoviedo=# select * from ALTER TABLE;
+ERROR:  syntax error at or near "TABLE"
+LINE 1: select * from ALTER TABLE;
+                            ^
+sebatapiaoviedo=# ^C
+sebatapiaoviedo=# INSERT INTO ALTER TABLE (id, fechayhora_decreación, contenido)
+sebatapiaoviedo-# VALUES (1, '01-02-2020', 'primer comentario a Pamela');
+ERROR:  syntax error at or near "("
+LINE 1: INSERT INTO ALTER TABLE (id, fechayhora_decreación, contenid...
+                                ^
+sebatapiaoviedo=# 
+
