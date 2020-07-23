@@ -1,0 +1,163 @@
+sebatapiaoviedo@sebatapiaoviedo-HP-ENVY:~$ psql
+psql (12.2 (Ubuntu 12.2-4))
+Type "help" for help.
+
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |        título        
+----+-------------------+-------------------+-----------------+----------------+----------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2  | Prueba tabla 5 | quinto para Pedro
+  6 | Carlos            | 2020-02-06        | Prueba Carlos 4 | Prueba tabla 6 | volviendo con Carlos
+(5 rows)
+
+sebatapiaoviedo=# select * from comentarios;
+ id | fechayhora | contenido | id_post 
+----+------------+-----------+---------
+(0 rows)
+
+sebatapiaoviedo=# \d post;
+                                         Table "public.post"
+      Column       |         Type          | Collation | Nullable |             Default              
+-------------------+-----------------------+-----------+----------+----------------------------------
+ id                | integer               |           | not null | nextval('post_id_seq'::regclass)
+ nombre_de_usuario | character varying(20) |           |          | 
+ fecha_de_creación | date                  |           |          | 
+ contenido         | character varying     |           |          | 
+ descripción       | character varying     |           |          | 
+ título            | character varying     |           |          | 
+Indexes:
+    "post_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "comentarios" CONSTRAINT "comentarios_id_post_fkey" FOREIGN KEY (id_post) REFERENCES post(id)
+
+sebatapiaoviedo=# \d comentarios;
+                                        Table "public.comentarios"
+   Column   |            Type             | Collation | Nullable |                 Default                 
+------------+-----------------------------+-----------+----------+-----------------------------------------
+ id         | integer                     |           | not null | nextval('comentarios_id_seq'::regclass)
+ fechayhora | timestamp without time zone |           |          | 
+ contenido  | character varying           |           |          | 
+ id_post    | integer                     |           |          | 
+Indexes:
+    "comentarios_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "comentarios_id_post_fkey" FOREIGN KEY (id_post) REFERENCES post(id)
+
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('01-02-2020', 'primer comentario Pamela', 'Pamela');
+ERROR:  invalid input syntax for type integer: "Pamela"
+LINE 2: VALUES ('01-02-2020', 'primer comentario Pamela', 'Pamela');
+                                                          ^
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('01-02-2020', 'primer comentario Pamela', '1');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('01-02-2020', 'segundo comentario Pamela', '2');
+INSERT 0 1
+sebatapiaoviedo=# select * from comentarios;
+ id |     fechayhora      |         contenido         | id_post 
+----+---------------------+---------------------------+---------
+  1 | 2020-02-01 00:00:00 | primer comentario Pamela  |       1
+  2 | 2020-02-01 00:00:00 | segundo comentario Pamela |       2
+(2 rows)
+
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('01-02-2020', 'primer comentario Carlos', '6');
+INSERT 0 1
+sebatapiaoviedo=# select * from comentarios;
+ id |     fechayhora      |         contenido         | id_post 
+----+---------------------+---------------------------+---------
+  1 | 2020-02-01 00:00:00 | primer comentario Pamela  |       1
+  2 | 2020-02-01 00:00:00 | segundo comentario Pamela |       2
+  3 | 2020-02-01 00:00:00 | primer comentario Carlos  |       6
+(3 rows)
+
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('01-02-2020', 'segundo comentario Carlos', '6');
+INSERT 0 1
+sebatapiaoviedo=# select * from comentarios;
+ id |     fechayhora      |         contenido         | id_post 
+----+---------------------+---------------------------+---------
+  1 | 2020-02-01 00:00:00 | primer comentario Pamela  |       1
+  2 | 2020-02-01 00:00:00 | segundo comentario Pamela |       2
+  3 | 2020-02-01 00:00:00 | primer comentario Carlos  |       6
+  4 | 2020-02-01 00:00:00 | segundo comentario Carlos |       6
+(4 rows)
+
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('01-02-2020 13:28', 'tercer comentario Carlos', '6');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('01-02-2020 13:28', 'cuarto comentario Carlos', '6');
+INSERT 0 1
+sebatapiaoviedo=# select * from comentarios;
+ id |     fechayhora      |         contenido         | id_post 
+----+---------------------+---------------------------+---------
+  1 | 2020-02-01 00:00:00 | primer comentario Pamela  |       1
+  2 | 2020-02-01 00:00:00 | segundo comentario Pamela |       2
+  3 | 2020-02-01 00:00:00 | primer comentario Carlos  |       6
+  4 | 2020-02-01 00:00:00 | segundo comentario Carlos |       6
+  5 | 2020-02-01 13:28:00 | tercer comentario Carlos  |       6
+  6 | 2020-02-01 13:28:00 | cuarto comentario Carlos  |       6
+(6 rows)
+
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido    |  descripción   |        título        
+----+-------------------+-------------------+-----------------+----------------+----------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1 | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2 | Prueba tabla 2 | segundo update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1  | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2  | Prueba tabla 5 | quinto para Pedro
+  6 | Carlos            | 2020-02-06        | Prueba Carlos 4 | Prueba tabla 6 | volviendo con Carlos
+(5 rows)
+
+sebatapiaoviedo=# INSERT INTO post (nombre_de_usuario, fecha_de_creación, contenido, descripción, título)
+sebatapiaoviedo-# VALUES ('Margarita', '07-02-2020', 'Prueba Margarita', 'Prueba tabla 7', 'primer post de margarita');
+INSERT 0 1
+sebatapiaoviedo=# select * from post;
+ id | nombre_de_usuario | fecha_de_creación |    contenido     |  descripción   |          título          
+----+-------------------+-------------------+------------------+----------------+--------------------------
+  1 | Pamela            | 2020-02-01        | Prueba Pamela 1  | Prueba tabla 1 | primer update
+  2 | Pamela            | 2020-02-02        | Prueba Pamela 2  | Prueba tabla 2 | segundo update
+  4 | Pedro             | 2020-02-04        | Prueba Pedro 1   | Prueba tabla 4 | cuarto para Pedro
+  5 | Pedro             | 2020-02-05        | Prueba Pedro 2   | Prueba tabla 5 | quinto para Pedro
+  6 | Carlos            | 2020-02-06        | Prueba Carlos 4  | Prueba tabla 6 | volviendo con Carlos
+  7 | Margarita         | 2020-02-07        | Prueba Margarita | Prueba tabla 7 | primer post de margarita
+(6 rows)
+
+sebatapiaoviedo=# ^C
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('03-04-2020', 'primer comentario margarita', '7');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('03-04-2020', 'segundo comentario margarita', '7');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('03-04-2020', 'tercer comentario margarita', '7');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('03-04-2020', 'cuarto comentario margarita', '7');
+INSERT 0 1
+sebatapiaoviedo=# INSERT INTO comentarios (fechayhora, contenido, id_post)
+sebatapiaoviedo-# VALUES ('07-04-2020', 'último! comentario margarita', '7');
+INSERT 0 1
+sebatapiaoviedo=# select * from comentarios;
+ id |     fechayhora      |          contenido           | id_post 
+----+---------------------+------------------------------+---------
+  1 | 2020-02-01 00:00:00 | primer comentario Pamela     |       1
+  2 | 2020-02-01 00:00:00 | segundo comentario Pamela    |       2
+  3 | 2020-02-01 00:00:00 | primer comentario Carlos     |       6
+  4 | 2020-02-01 00:00:00 | segundo comentario Carlos    |       6
+  5 | 2020-02-01 13:28:00 | tercer comentario Carlos     |       6
+  6 | 2020-02-01 13:28:00 | cuarto comentario Carlos     |       6
+  7 | 2020-04-03 00:00:00 | primer comentario margarita  |       7
+  8 | 2020-04-03 00:00:00 | segundo comentario margarita |       7
+  9 | 2020-04-03 00:00:00 | tercer comentario margarita  |       7
+ 10 | 2020-04-03 00:00:00 | cuarto comentario margarita  |       7
+ 11 | 2020-04-07 00:00:00 | último! comentario margarita |       7
+(11 rows)
+
+sebatapiaoviedo=# 
+
